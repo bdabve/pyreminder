@@ -1,0 +1,19 @@
+dir(Dot11)          # list of available methods
+lsc()               # all manipulation functions includded in scapy.
+
+print(sniff.__doc__)    # docs
+
+sniff(count=4)      # sniff 4 packets
+pkt = _             # save sniffed packet in pkt var
+pkt.summary()       # summary
+pkt.show()          # show usefull information
+
+sniff(count=1, prn=lambda p: p.show())  # show information interactive
+sniff(iface="wlp2s0", prn=lambda p: p.show())  # set interface, capture all packet[CTRL+C] to break, show information interactive
+
+pcp_fname = rdpcap('path/to/pcap_file')     # read a pcap file
+pcp.summary()
+pcp.show()                                  # show usefull information
+
+pkt = pcp[20]                       # packet to examine; use .show() method to get all number of packets
+pkt.show()

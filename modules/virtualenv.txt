@@ -1,0 +1,45 @@
+[*] Python related packages:
+
+    sudo apt install build-essential python-dev python3-dev
+    sudo apt install python-pip python3-pip
+    pip install --user --upgrade pip
+
+# Make sure the path for user installs is included or add it to .bashrc manually
+
+    export PATH=$HOME/.local/bin:$PATH
+    which pip
+
+[*] Install virtualenv
+
+    pip install --user virtualenv
+    pip install --user virtualenvwrapper
+
+# To finish the setup of venv, put these line in .bashrc and source the file.
+    echo "export WORKON_HOME=$HOME/virtualenv" >> .bashrc 		# Where to store our virtual envs
+    echo "export PROJECT_HOME=$HOME/Projects-Active" >> .bashrc 	# Where to store our virtual envs
+    echo 'source $HOME/.local/bin/virtualenvwrapper' >> .bashrc	# Where is the virtualenvwrapper.sh (use: which virtualenv.sh)
+
+[*] Create a python virtual environment (path is not required)
+
+    $ mkvirtualenv py2 -p /usr/bin/python2
+    $ mkvirtualenv py3 -p /usr/bin/python3	# for python3
+
+    $ virtualenv -p python3 env
+    $ virtualenv -p $env:python3 env        # windows powershell
+
+    $ source env/bin/activate               # active l'environnement
+    $ ./env/scripts/ectivate.ps1            # powershell
+
+    (env) $ deactivate                      # desactive puis supprimez
+    $ rm -rf env
+    $ pip freeze > requirements.txt         # creer un fichier de dépendances
+    $ pip list > requirement.txt            # powershell
+
+    $ pip install -r requirement.txt
+
+[*] Use pip to install needed module
+
+    workon			    # Use this command to get list of available venv
+    deactivate		    # To close out the current venv
+    rmvirtualenv		# Remove an existing venv
+

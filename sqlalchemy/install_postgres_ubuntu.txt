@@ -1,0 +1,16 @@
+$ sudo apt install postgresql postgresql-contrib
+
+# Postgres uses a concept called 'roles' to handle in authentication and authorization.
+# The installation procedure created a user account called postgres that is associated with the default Postgres role/
+$ sudo -i -u postgres       # switch to the postgres account on the server
+$ psql                      # access a Postgres prompt
+$ sudo -u postgres psql     # the same
+
+# create a new role and database
+# Postgres authentication system makes by default is that for any role used to login.
+# That role will have a database with the same name
+postgres@server:~$ createuser --interactive     # create the new role
+postgres@server:~$ createdb username            # create the new with the same name of the user
+
+# change password for username
+psql:$ \password username           # you will prompted to type a new password

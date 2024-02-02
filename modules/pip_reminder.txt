@@ -1,0 +1,26 @@
++---------------------------------------------------------------------------------------------
+| » pip cheat sheet:
+|-------------------
+| $ pip search packagename                                    # Search for packages
+| $ pip install packagename                                   # Install some packages
+| $ pip install --user packagename                            # Install some package in user space
+| $ pip install --upgrade packagename                         # Upgrade some package
+| $ pip install -I SomePackage1==1.1.0 'SomePackage2>=1.0.4'  # Install specific version of a package
+|
+| # Output and install packages in a requirement file
+| $ pip freeze > requirements.txt
+| $ pip install -r requirements.txt
+|
+| $ pip show packagename                      # Show details of a package
+| $ pip list --format=columns
+| $ pip list --outdated                       # List outdated packages
+|
+| $ pip help                                  # Display help
+| $ pip help command                          # Display help of command
+|
+| # Upgrade all outdated packages.
+| $ pip freeze --local | grep -v '^\-e' | cut -d = -f 1 | xargs -n1 pip install -U
+|
+| # Upgrade outdated packages on latest version of pip
+| $ pip list --outdated --format=freeze | cut -d = -f 1 | xargs -n1 pip install -U
+|_____________________________________________________________________________________________

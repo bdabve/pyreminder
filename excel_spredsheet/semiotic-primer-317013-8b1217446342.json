@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "semiotic-primer-317013",
+  "private_key_id": "8b121744634266be704d16e07894e37835a9af90",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQCwQqvguvZOgr+a\nzPeFIzV6UGzicJvAhWrQYfxHaMk18vY5/nEypNpIoQnw1Y2Q1/YDJTxVaouF+Qwp\n5tmR4sS7DvNsYYFogkA6q6cF4mFYrnHdYmvLpaJadCR7SXJonnYSHXg9VOpWXmtH\n7p7H9PM5t9OViX5rOEU7a39c5Zmi/Bx7w0G/G9drfKZjGeN+1BBdZWUa5CYOR/QX\npxobnmBzT/hArwXV+AQuNncfCRed49ri/m28lfTVye3/enfvTyI/fO0kZiEu++UP\nvKBv4d3qrdlXEtzSVQzjdjzu2oXZDGzDddsGEFAeYjbETxhaiGWLzgoGwRLPPMa6\nw9ITW2oXAgMBAAECggEALUzdVtNGVXRGIVd3cBjV+DsuWN4/MXI4uxjL2WCFgh+R\nB+OsnSsATPVSlDqWeTj/6dwKjxtkg4i4BxblKRjinf7gMiU3OLBtKIcQVLNTeJLR\nAeh3Mu49dUjvTV5ZkKjVSJ+ZVQ37cjovEVwzI8oBLv7fWsntG0pphLWClNIPs/Lw\ndPFh1n/obEqN2Q3v1y7XA069SKB3lLbPsiwzkkJ9mDJFdg0ead3rkDwGLZFILy93\njvYQPyQ0PIJ/blVMg3F9AbL3Q+JSGzWEHObjLS0HrLJo9zcxXov6NUlKKG7dWeMy\nfj/eHUbPZUApPZcVqWg5fxH10UnwFhllC0A0wnBDhQKBgQDz7UNQ09RoggPFoNL4\nc+u0BShrLDob9fktETajNYMyT0mAIZNEyO09mU3eVcvMxEPWAl9yjaug2JP0720r\nHBV1dxV7ic6vOpR6B/sIXql1ca30VBmulw64wMLBJPbrYiXjIMUDmHxpSQkJ2UTT\nYioIyYAdZSZ5O8n0tWBM3ReGQwKBgQC4/AY7n2c3CdSlVnfQZ62TnNdqu1WRu73O\nPLkiLoEit02Y0ROtL7h129rfqf3NrHuF7lf4MY+IXFgC6f+X2ZnkLeyrO3BFQTdw\nOM9mn/LWj7ClV5j4pQ19NMW+5TF6N2wZMD0gwoB5nzWmBoWoFNCVFMAo59swWM/j\nQRP4UUPxnQKBgQDVATJQSbppTGeY01iHR0rjV8G03Nkdg40E8swgd2FKtHv9nNQq\nM78flFiwN4GRHS4TmtzYfqgJ/DYvpEhTZeHDQqsKxwsqb2Aqs/9djrQx74Q1IJ+Q\nmy5q3UD0QqAwafOlw/7mpei2U+XFqOn2IPmN1M/AW4zePvybaStf041wWwKBgF3M\n7hwtqFjwUzPDtN2otQu07Ebi13EekhCSGg6LJlBEQsTKv/+BwzeAVGw19szkOX6g\nbVsdRnsO2FIh9ck6Ph7GaswpR7TWbRYquICBetHx6tDsqlTq3PwwVlWGQqCGmfnr\nzBNgjWUepkWZ6QxiAaKW8xnK+Ap7/m5uAYJZMurBAoGAL+WccxEEuxmL13SWf7WQ\nGBVofKAh6/72RyWoCftkUF5/q5mJRpEJalqC/JmAYrscOE6Wy8rWDikvNsHYwQgf\nrRTvWCmlFzRINfWhKmNtDRjLsvhO5R+6i+ah8u17lVqil1YpRQJPDr6oB2Ti3xRT\nudOyYu1v2hw2e1NAWFGLXT4=\n-----END PRIVATE KEY-----\n",
+  "client_email": "dabve-server@semiotic-primer-317013.iam.gserviceaccount.com",
+  "client_id": "102375355165120860940",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/dabve-server%40semiotic-primer-317013.iam.gserviceaccount.com"
+}

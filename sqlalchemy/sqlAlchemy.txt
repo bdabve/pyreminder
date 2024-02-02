@@ -1,0 +1,241 @@
++---------------------------------------------------------------------------------------------
+| → Connect to database
+|----------------------
+| # SQLAlchemy provedes a function to create an engine.
+|     - Database type(Postgres, MySQL, etc.)
+|     - Dialect unless the default for the database type(Psycopg2, PyMySQL, etc.)
+|     - Optional authentication details (username and password)
+|     - Location of the database (file or hostname of the database server)
+|     - Optional database server port.
+|     - Optional database name.
+|
+| >>> from datetime import datetime
+| >>> from sqlalchemy import create_engine
+|
+| >>> engine = create_engine('postgresql+psycopg2://dabve:sqlUbuntu@localhost:5432/dabve', pool_recycle=3600)
+|                             db_type   +dialect ://user :passwd   @host     :port/dbname'
+|
+| # Creting an engine for a remote MySQL database
+|   >>> engine = create_engine('mysql+pymysql://cookiemonster:chocolatechip@mysql01.monster.internal/cookies', pool_recycle=3600)
+|
+| # SQLite
+|   >>> engine = create_engine('sqlite:///sql_alchemy.sqlite')
+|   >>> engine = create_engine('sqlite:///:memory:')
+|   >>> engine = create_engine('sqlite:////home/cookiemonster/cookies.db')
+|   >>> engine = create_engine('sqlite:////c:\\Users\\cookiesmonster\\cookies.db')
+|   >>> engine = create_engine(r'sqlite:////c:\Users\cookiesmonster\cookies.db')
+|
+| # Some optional keywords for the create_engine function are:
+|   - echo            : Log the actions processed by the engine, such as SQL statements and their parameters. default=False
+|   - encoding        : Define the string encoding use by SQLAlchemy. default=True
+|   - isolation_level : Instructs SQLAlchemy to use a specific isolation level.
+|   - pool_recycle    : Recycles or times out the database connections at regular intervals.
+|
+|-----------------------------------------------------------------------------------
+| → Creating Tables
+|-------------------
+| >>> from datetime import datetime
+| >>> from sqlalchemy import create_engine, MetaData
+| >>> from sqlalchemy import Table, Column, Integer, Numeric, String, DateTime, ForeignKey, Boolean
+|
+|
+| >>> users = Table('users', metadata,
+| ...               Column('user_id', Integer(), primary_key=True),
+| ...               Column('username', String(15), nullable=False, unique=True),
+| ...               Column('email_address', String(255), nullable=False),
+| ...               Column('phone', String(20), nullable=False),
+| ...               Column('password', String(25), nullable=False),
+| ...               Column('created_on', DateTime(), default=datetime.now),
+| ...               Column('updated_on', DateTime(), default=datetime.now, onupdate=datetime.now)
+| ...               )
+| >>> cookies = Table('cookies', metadata,
+| ...                 Column('cookie_id', Integer(), primary_key=True),
+| ...                 Column('cookie_name', String(50), index=True),
+| ...                 Column('cookie_recipe_url', String(255)),
+| ...                 Column('cookie_sku', String(55)),
+| ...                 Column('quantity', Integer()),
+| ...                 Column('unit_cost', Numeric(12, 2))
+| ...                 CheckConstraint('quantity > 0', name='quantity_positive')
+| ...                 )
+|
+| # Ensure that the data supplied for a column matches a set of user_defined criteria.
+| # In this example, ensuring the unit_cost is never allowed to be less than 0.00
+|   CheckConstraint('unit_cost >= 0.00', name='unit_cost_positive')
+|
+| >>> orders = Table('orders', metadata,
+| ...                Column('order_id', Integer(), primary_key=True),
+| ...                Column('user_id', ForeignKey('users.user_id')),  # ForeignKey on users.user_id
+| ...                Column('shipped', Boolean(), default=False)
+| ...                )
+|
+| # Generic type representations
+|
+| SQLAlchemy    | Python              | SQL
+|---------------|---------------------|---------------------------
+| BigInteger    | int                 | BIGINT
+| Boolean       | bool                | BOOLEAN or SMALLINT
+| Date          | datetime.date       | DATE (SQLite: STRING )
+| DateTime      | datetime.datetime   | DATETIME (SQLite: STRING )
+| Enum          | str                 | ENUM or VARCHAR
+| Float         | float or Decimal    | FLOAT or REAL
+| Integer       | int                 | INTEGER
+| Interval      | datetime.timedelta  | INTERVAL or DATE from epoch
+| LargeBinary   | byte                | BLOB or BYTEA
+| Numeric       | decimal.Decimal     | NUMERIC or DECIMAL
+| Unicode       | unicode             | UNICODE or VARCHAR
+| Text          | str                 | CLOB or TEXT
+| Time          | datetime.time       | DATETIME
+|
+| # Declaring key after creations
+|   from sqlalchemy import PrimaryKeyConstraint, UniqueConstraint, CheckConstraint
+|   PrimaryKeyConstraint('user_id', name='user_pk')
+|   UniqueConstraint('username', name='uix_userame')
+|
+| # Indexes
+|   from sqlalchemy import Index
+|   Index('index_name', 'column_name')
+|   Index('ix_cookies_cookie_name', 'cookie_name')
+|
+| # ForeignKey after creation
+|   from sqlalchemy import ForeignKeyConstraint
+|   ForeignKeyConstraint(['order_id'], ['orders.order_id'])
+|
+| >>> engine = create_engine('sqlite:///sql_alchemy.sqlite')
+| >>> conn = engine.connect()
+| >>> metadata = MetaData()
+| >>> for t in metadata.sorted_tebles:
+| ...     print(t.name)                 # print table names
+|
+| # Metadata is used to tie together the database structure so it can be quickly accessed inside SQLAlchemy.
+|   It's often useful to think of metadata as a kind of catalog of Table object with optional information about the engine and conn
+|   Those tables can be accessed via a dictionary, MetaData.tables.
+|
+| >>> metadata.create_all(engine)         # Create all tables
+|
+| # Working with pre-existing database
+| >>> from sqlalchemy import Table, MetaData, create_engine
+| >>> engine = create_engine('sqlite:///etatsStocksPDR.sqlite')
+| >>> conn = engine.connect()
+| >>> metadata = MetaData()
+| >>> magasin_pdr = Table('magasin_pdr', metadata, autoload=True, autoload_with=engine)
+| >>> magasin_pdr.append_column(Column('parent_id', Integer(), nullable=True))      # add column
+| >>> str(magasin_pdr.c)            # print column name
+|-----------------------------------------------------------------------
+| → INSERT
+|---------
+| # Single insert as method of a Table object.
+|   >>> query = cookies.insert().values(cookie_name='chocolate chip',
+|   ...                                 cookie_recipe_url='http://url.com',
+|   ...                                 unit_cost='0.50')
+|
+|   >>> print(str(quary))                 # shows us the actuel SQL statement that will be executed.
+|   >>> print(query.compile().params)     # access the params attribute of the statement.
+|   >>> result = conn.execute(query)      # execute the statement
+|   >>> print(result.inserted_primary_key)
+|   >>> print(result.rowcount)
+|
+| # Insert function
+|   >>> from sqlalchemy import insert
+|   >>> query = insert(cookies).values(cookie_name='chocolate chip',
+|   ...                                cookie_recipe_url='http://url.com',
+|   ...                                unit_cost='0.50')
+|
+| # Provide the values as keyword arguments to the execute method
+|   >>> ins = cookies.insert()
+|   >>> result = conn.execute(ins,
+|   ...                       cookie_name='dark chocolate chip',
+|   ...                       cookie_recipe_url='httpl://url.com',
+|   ...                       unit_cost='0.75')
+|   >>> print(result.rowcount)
+|
+| # Multiple Insert
+|   >>> ins = cookies.insert()
+|   >>> inventary_list = [
+|   ...     {'cookie_name': 'peanut butter', 'quantity': '24', 'unit_cost': '0.25'},
+|   ...     {'cookie_name': 'oatmeal reasin', 'quantity': '100', 'unit_cost': '1.00'}
+|   ... ]
+|   >>> result = conn.execute(ins, inventary_list)
+|   >>> print(result.rowcount)                        # 2
+|-----------------------------------------------------------------------
+| → Querying Data
+|----------------
+| >>> from sqlalchemy.sql import select
+| >>> query = select([cookies])
+| >>> result = conn.execute(query)
+| >>> rows = result.fetchall()
+|
+| # Simple select method
+|   >>> query = cookies.select()        # use the select method on Table object to select all columns.
+|   >>> result = query.execute(query)
+|   >>> rows = result.fetchall()
+|   >>> first = result.first()          # Returns the first record if there is one and closes the connection.
+|   >>> one = result.fetchone()
+|   >>> scalar_ = result.scalar()       # Return a single value if a query results in a single record with one column.
+|
+| # When writing production code, you should follow these guidelines:
+|   - first: for getting a single record over both the fetchone and scalar methods, because it is clearer to our fellow coders.
+|   - Use the iterable version of the ResultProxy over the fetchall and fetchone methods.
+|     It is more memory efficient and we tend to operate on the data one record at a time.
+|   - Avoid the fetchone method, as it leaves connections open if you are not careful.
+|   - Use the scalar method sparingly, as it raises errors if a query ever returns more than one row with one column,
+|     which often gets missed during testing.
+|
+| >>> query = select([cookies])
+| >>> result = conn.execute(query)
+| >>> for record in result:
+| ...     print(record.cookie_name)                 # like a named tuple
+| ...     print(record[cookie_name.c.cookie_name])  # access columne by Column object
+|
+| >>> s = select([cookies.c.cookie_name, cookies.c.quantity])       # controlling the columns in the query
+| >>> rows = conn.execute(query)
+| >>> print(rows.keys())                                        # return the list of columns.
+|
+|--------------------------------------------------------------------------------------------
+| → Ordering
+|----------------
+| >>> query = select([cookies.c.cookie_name, cookies.c.quantity]).order_by(cookies.c.quantity)
+| >>> rows = conn.execute(query).fetchall()
+| >>> for cookie in rows:
+| ...     print('{} - {}'.format(*reverced(cookie)))        # to print quantity first
+|
+| # dec()
+|   >>> from sqlalchemy import desc
+|   >>> query = select([cookies.c.cookie_name, cookies.c.quantity]).order_by(desc(cookies.c.quantity))
+|   >>> rows = conn.execute(query).fetchall()
+| # limit()
+|   >>> query = select([cookies.c.cookie_name, cookies.c.quantity]).order_by(desc(cookies.c.quantity)).limit(2)
+|   >>> rows = conn.execute(query).fetchall()
+|--------------------------------------------------------------------------------------------
+| → SQL Functions
+|----------------
+| >>> from sqlalchemy.sql import func
+| >>> query = select([func.sum(cookies.c.quantity)])
+| >>> rows = conn.execute(query)
+| >>> print(rows.scalar())                      # will return only the leftmost column in the first record.
+|
+| >>> query = select([func.count(cookies.c.cookie_name)])
+| >>> rows = conn.execute(query)
+| >>> print(rows.count_1)                      # the column name is autogenerated and is commonly <func_name>_<position>
+|
+| >>> query = select([func.count(cookies.c.cookie_name).label('inventory_count')])  # give an alias
+| >>> rows = conn.execute(query)
+| >>> print(rows.inventory_count)                      # call the alias name
+|--------------------------------------------------------------------------------------------
+| → Filtering
+|------------
+| >>> query = select([cookies]).where(cookie.c.cookie_name == 'chocolate chip')
+| >>> query = select([cookies]).where(cookie.c.cookie_name.like('%chocolate%'))     # LIKE
+| >>> rows = conn.execute(query)
+| >>> record = rows.first()
+| >>> print(records.items())              # give me a list of columns and values.
+|
+| between(cleft, cright)    | Find where the column is between cleft and cright
+| concat(column_two)        | Concatenate column with column_two
+| distinct()                | Find only unique values for the column
+| in_([list])               | Find where the column is in the list
+| is_(None)                 | Find where the column is None (commonly used for Null checks with None)
+| contains(string)          | Find where the column has string in it (case-sensitive)
+| endswith(string)          | Find where the column ends with string (case-sensitive)
+| like(string)              | Find where the column is like string (case-sensitive)
+| startswith(string)        | Find where the column begins with string (case-sensitive)
+| ilike(string)             | Find where the column is like string (this is not case-sensitive)

@@ -1,0 +1,23 @@
++-----------------------------------------------------------------
+| → Getting the terminal size
++----------------------------
+|
+| >>> import os
+| >>> sz = os.get_terminal_size()
+| >>> print(sz.columns, sz.lines)
+|-----------------------------------------------------------------
+| → Terminating a program with an error message
++-----------------------------------------------
+|
+| >>> import sys
+| >>> sys.stderr.write('It failded!')         # not neccessary
+| >>> raise SystemExit(1)                     # exit status 1
+|
+|-----------------------------------------------------------------
+| → < eval >
++-----------
+| # eval: accepts string and basically runs them.
+| >>> var = 10
+| >>> source = 'var * 2'
+| >>> eval(source)                       # 20
++-----------------------------------------------------------------

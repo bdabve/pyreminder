@@ -1,0 +1,74 @@
++---------------------------------------------------------------------------------------------
+|→ Reading configuration files
+|------------------------------
+| - The configparser module can be used to read configuration files.
+|
+| >>> import configparser
+|
+| >>> def read_configFile(input_file):
+| ...      global cfg
+| ...      cfg = configparser.ConfigParser(allow_no_value=True, strict=False)
+| ...      print('[*] Config file: ', cfg.read(input_file))
+| ...
+| ...      print('[*] Sections: ')
+| ...      for section in cfg.sections():
+| ...          print(section)
+|
+| >>> def get_sections(section):
+| ...     print('[+] Section: {}'.format(section))
+| ...     # print(cfg.options(section))                       # All options available in the section
+| ...
+| ...     try:
+| ...         section_items = cfg[section]
+| ...         for key, value in section_items.items():
+| ...             print('    {:30}: {}'.format(key, value))
+| ...         print('-' * 50)
+| ...     except Exception as err:
+| ...         print('[-] Error: {} not found'.format(err))
+|_____________________________________________________________________________________________
+| → Writing config files
+|------------------------
+| >>> import configparser
+|
+| >>> def createConfig(path):
+| ...     ''' Create a config file '''
+| ...     config = configparser.ConfigParser()
+| ...     config.add_section('Settings')
+| ...     config.set('Settings', 'font', 'Courier')
+| ...     config.set('Settings', 'font_size', '10')
+| ...     config.set('Settings', 'font_style', 'Normal')
+| ...     config.set('Settings', 'font_info', 'You are using %(font)s at %(font_size)s pt')
+| ...     with open(path, 'w') as config_file:
+| ...         config.write(config_file)
+|
+| >>> createConfig('settings.ini')
+| OUT:
+| [Settings]
+| font = Courier
+| font_size = 10
+| font_style = Normal
+| font_info = You are using %(font)s at %(font_size)s pt
+|_____________________________________________________________________________________________
+|→ CRUD Conifg files
+|-------------------
+| >>> import os
+|
+| >>> def crudConfig(path):
+| ...     '''Create, read, update, delete config'''
+| ...     if not os.path.exists(path):
+| ...         createConfig(path)                # createConfig from writing config file section
+| ...     config = configparser.ConfigParser()
+| ...     config.read(path)
+| ...     # read some values from the config
+| ...     font = config.get('Settings', 'font')
+| ...     font_size = config.get('Settings', 'font_size')
+| ...     # change a value in the config
+| ...     config.set('Settings', 'font_size', '12')
+| ...     # delete a value from the config
+| ...     config.remove_option('Settings', 'font_style')
+| ...     # write changes back to the config file
+| ...     with open(path, 'w') as config_file:
+| ...         config.write(config_file)
+|
+| >>> crudConfig(path)
+|_____________________________________________________________________________________________
